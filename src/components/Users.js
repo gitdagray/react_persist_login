@@ -20,8 +20,10 @@ const Users = () => {
                 console.log(response.data);
                 isMounted && setUsers(response.data);
             } catch (err) {
-                console.error(err);
-                navigate('/login', { state: { from: location }, replace: true });
+                if (err.name !== "CanceledError") {
+                    console.error(err);
+                    navigate('/login', { state: { from: location }, replace: true });
+                }
             }
         }
 
@@ -31,7 +33,7 @@ const Users = () => {
             isMounted = false;
             controller.abort();
         }
-    }, [])
+    }, [axiosPrivate, isLoading, navigate, location])
 
     return (
         <article>
